@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useDocumentData } from "react-firebase-hooks/firestore";
+import Editor from "./Editor";
 
 const Document = ({ id }: { id: string }) => {
   const [input, setInput] = useState("");
@@ -48,8 +49,12 @@ const Document = ({ id }: { id: string }) => {
           >
             {isUpdate ? "Updating..." : "Update"}
           </Button>
+
+          <hr className="pb-10" />
+          {/* Collaborative Editor*/}
         </form>
       </div>
+      <Editor />
     </div>
   );
 };
