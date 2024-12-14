@@ -28,19 +28,29 @@ const Document = ({ id }: { id: string }) => {
       });
     }
   };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error loading document: {error.message}</div>;
 
   return (
     <div>
       <div className="flex max-w-3xl mx-auto justify-between pb-5">
         <form className="flex flex-1 space-x-2" onSubmit={updateTitle}>
           {/* Search by title*/}
-          <Input className="rounded border-spacing-1" value={input} onChange={(e) => setInput(e.target.value)} />
-          <Button className="bg-black text-white px-4 py-2 rounded shadow-md hover:bg-gray-600 transition disabled:bg-gray-300" type="submit" disabled={isUpdate}>
+          <Input
+            className="rounded border-spacing-1"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <Button
+            className="bg-black text-white px-4 py-2 rounded shadow-md hover:bg-gray-600 transition disabled:bg-gray-300"
+            type="submit"
+            disabled={isUpdate}
+          >
             {isUpdate ? "Updating..." : "Update"}
           </Button>
         </form>
       </div>
-   </div>
+    </div>
   );
 };
 
