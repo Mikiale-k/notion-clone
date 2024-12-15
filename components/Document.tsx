@@ -6,11 +6,14 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import Editor from "./Editor";
+import useOwner from "@/lib/useOwner";
+import DeleteDocument from "./DeleteDocument";
 
 const Document = ({ id }: { id: string }) => {
   const [input, setInput] = useState("");
   const [isUpdate, setTransition] = useTransition();
   const [data, loading, error] = useDocumentData(doc(db, "documents", id));
+  const isOwner = useOwner()
 
   useEffect(() => {
     if (data) {
@@ -33,7 +36,7 @@ const Document = ({ id }: { id: string }) => {
   if (error) return <div>Error loading document: {error.message}</div>;
 
   return (
-    <div>
+    <div className='flex-1 h-full bg-white p-5'>
       <div className="flex max-w-3xl mx-auto justify-between pb-5">
         <form className="flex flex-1 space-x-2" onSubmit={updateTitle}>
           {/* Search by title*/}
@@ -50,8 +53,13 @@ const Document = ({ id }: { id: string }) => {
             {isUpdate ? "Updating..." : "Update"}
           </Button>
 
-          <hr className="pb-10" />
-          {/* Collaborative Editor*/}
+          {isOwner && (
+            <>
+              
+              <DeleteDocument />
+            </>
+          )}
+          
         </form>
       </div>
       <Editor />

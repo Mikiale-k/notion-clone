@@ -5,12 +5,20 @@ import { doc } from "firebase/firestore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDocumentData } from "react-firebase-hooks/firestore";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
-function SidebarOption({ href, id }: { href: string; id: string }) {
+interface SidebarOptionProps {
+  href: string;
+  id: string;
+}
+
+function SidebarOption({ href, id }: SidebarOptionProps) {
   const [data, loading, error] = useDocumentData(doc(db, "documents", id));
   const pathname = usePathname();
   const isActive = href.includes(pathname) && pathname !== "/";
 
+  if (loading) return <LoadingSpinner />; // Show a loading spinner
+  if (error) return <p>Error loading document.</p>; // Show error message
   if (!data) return null;
 
   return (

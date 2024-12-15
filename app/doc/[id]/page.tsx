@@ -1,14 +1,12 @@
-"use client";
-
 import Document from "@/components/Document";
 
-const DocumentPage = ({
-  params: { id },
+const DocumentPage = async ({
+  params,
 }: {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }) => {
+  const { id } = await params; // Unwrap the params Promise
+
   return (
     <div className="flex flex-col flex-1 min-h-screen">
       <Document id={id} />
