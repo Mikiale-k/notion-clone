@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose
+  DialogClose,
 } from "@/components/ui/dialog";
 import { useState, useTransition } from "react";
 import { Button } from "./ui/button";
@@ -26,19 +26,14 @@ const DeleteDocument = () => {
     if (!roomId) return;
 
     startTransition(async () => {
-      try {
-        const { success } = await deleteDocument(roomId);
+      const { success } = await deleteDocument(roomId);
 
-        if (success) {
-          setIsOpen(false);
-          router.replace("/");
-          toast.success("Room Deleted Successfully!");
-        } else {
-          toast.error("Failed to delete room!");
-        }
-      } catch (error) {
-        toast.error("An unexpected error occurred!");
-        console.error("Delete error:", error);
+      if (success) {
+        setIsOpen(false);
+        router.replace("/");
+        toast.success("Room Deleted Successfully!");
+      } else {
+        toast.error("Failed to delete room!");
       }
     });
   };
@@ -50,26 +45,24 @@ const DeleteDocument = () => {
       </Button>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogTitle>Are you sure you want to Delete?</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This will permanently delete your document adn all its contents,
+            remove your users from the documents.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="sm:justify-end gap-2">
           <Button
-            type="button"
-            
-            
+            type="submit"
             className="bg-red-500 px-3 text-white rounded shadow-md hover:bg-red-600 transition disabled:bg-red-300/90"
             onClick={handleDelete}
             disabled={isPending}
           >
             {isPending ? "Deleting..." : "Delete"}
           </Button>
-          <DialogClose>
+          <DialogClose asChild>
             <Button
-              type="button"
+              type="submit"
               className="rounded shadow-md hover:bg-gray-200"
             >
               Close
