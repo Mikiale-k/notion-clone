@@ -57,26 +57,46 @@ export async function deleteDocument(roomId: string) {
     }
 }
 
-export async function InviteUserToDocument(roomId: string, email: string){
+export async function InviteUserToDocument(roomId: string, email: string) {
     auth.protect();
 
     console.log("InviteUserToDocument", roomId, email);
 
     try {
         await adminDb.collection("users")
-        .doc(email)
-        .collection("rooms")
-        .doc(roomId)
-        .set({
-            userId: email,
-            role: "editor",
-            createAt: new Date(),
-            roomId,
-        });
+            .doc(email)
+            .collection("rooms")
+            .doc(roomId)
+            .set({
+                userId: email,
+                role: "editor",
+                createAt: new Date(),
+                roomId,
+            });
 
-        return {success: true}
+        return { success: true }
     } catch (error) {
         console.log(error);
-        return {success: false}
+        return { success: false }
+    }
+}
+
+export async function removeUserFormDocument(roomId: string, email: string) {
+    auth.protect();
+
+    console.log("removed User From Document", roomId, email);
+
+    try {
+        await adminDb
+            .collection("users")
+            .doc(email)
+            .collection("rooms")
+            .doc(roomId)
+            .delete()
+
+        return { success: true }
+    } catch (error) {
+        console.log(error)
+        return { success: false }
     }
 }
